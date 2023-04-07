@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const constants = require("../utils/constants");
 
 const restaurantSchema = new Schema({
   name: {
@@ -13,6 +14,11 @@ const restaurantSchema = new Schema({
 
   category: {
     type: String,
+    enum: [
+      constants.restaurantCategory.takeout,
+      constants.restaurantCategory.dineout,
+    ],
+    default: constants.restaurantCategory.dineout,
     required: true,
   },
 

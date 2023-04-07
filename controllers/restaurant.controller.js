@@ -1,4 +1,5 @@
 const Restaurant = require("../models/restaurant.model");
+const objectConverter = require("../utils/objectConverter");
 
 exports.createRestaurant = async (req, res) => {
   const restaurantObject = {
@@ -33,6 +34,56 @@ exports.getAllRestaurant = async (req, res) => {
     });
   } catch (err) {
     console.log("Some error happened while fetching restaurant", err.message);
+    res.status(500).send({
+      message: "Some error occurred while fetching the Restaurant",
+    });
+  }
+};
+
+exports.getAllCategories = async (req, res) => {
+  try {
+    const categories = await Restaurant.aggregate([
+      { $group: { _id: "$category" } },
+      { $project: { _id: 0, category: "$_id" } },
+    ]);
+    console.log(categories);
+    res.status(200).send(objectConverter.categoryResponse(categories));
+  } catch (err) {
+    console.log("Some error happened while fetching categories", err.message);
+    res.status(500).send({
+      message: "Some error occurred while fetching categories",
+    });
+  }
+};
+
+exports.getAllRestaurantByCategory = async (req, res) => {
+  try {
+    const restaurants = await Restaurant.find({
+      category: req.params.categoryName.toUpperCase(),
+    });
+
+    res.status(200).send(restaurants);
+  } catch (err) {
+    console.log("Some error happened while fetching Restaurant", err.message);
+    res.status(500).send({
+      message: "Some error occurred while fetching the Restaurant",
+    });
+  }
+};
+
+exports.getRestaurantById = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+
+    if (restaurant) {
+      res.status(200).send(restaurant);
+    } else {
+      res.status(404).send({
+        message: "No Restaurant found with the given ID",
+      });
+    }
+  } catch (err) {
+    console.log("Some error happened while fetching Restaurant", err.message);
     res.status(500).send({
       message: "Some error occurred while fetching the Restaurant",
     });
