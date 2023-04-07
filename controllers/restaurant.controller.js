@@ -89,3 +89,20 @@ exports.getRestaurantById = async (req, res) => {
     });
   }
 };
+
+exports.getRestaurantsByRating = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.aggregate([
+      {
+        $match: { rating: { $gte: +req.params.rating } },
+      },
+    ]);
+
+    res.status(200).send(restaurant);
+  } catch (err) {
+    console.log("Some error happened while fetching Restaurant", err.message);
+    res.status(500).send({
+      message: "Some error occured while fetching the Restaurant.",
+    });
+  }
+};

@@ -2,7 +2,7 @@ const constants = require("../utils/constants");
 
 exports.verifyRestaurantReqBody = (req, res, next) => {
   if (Object.keys(req.body).length === 0) {
-    res.send({
+    res.status(400).send({
       message: "Content cannot be empty",
     });
     return;

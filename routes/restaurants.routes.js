@@ -1,4 +1,4 @@
-const { verifyRestaurantReqBody } = require("../middlewares");
+const { verifyRestaurantReqBody, isNumber } = require("../middlewares");
 const restaurantContoller = require("../controllers/restaurant.controller");
 
 module.exports = (app) => {
@@ -18,4 +18,10 @@ module.exports = (app) => {
   app.get("/api/restaurant/categories", restaurantContoller.getAllCategories);
 
   app.get("/api/restaurant/:id", restaurantContoller.getRestaurantById);
+
+  app.get(
+    "/api/restaurant/rating/:rating",
+    [isNumber.isNumber],
+    restaurantContoller.getRestaurantsByRating
+  );
 };
