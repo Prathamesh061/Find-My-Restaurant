@@ -3,7 +3,7 @@ const Restaurant = require("../models/restaurant.model");
 const validator = require("validator");
 
 exports.verifyRestaurantReqBody = (req, res, next) => {
-  if (Object.keys(req.body).length) {
+  if (!Object.keys(req.body).length) {
     res.status(400).send({
       message: "Content cannot be empty",
     });
@@ -24,7 +24,8 @@ exports.verifyRestaurantReqBody = (req, res, next) => {
     return;
   }
 
-  const restaurantCategory = req.body.category;
+  const restaurantCategory = (req.body.category =
+    req.body.category.toUpperCase());
   const restaurantCategories = [
     constants.restaurantCategory.dineout,
     constants.restaurantCategory.takeout,
@@ -99,7 +100,8 @@ exports.verifyRestaurantUpdateBody = async (req, res, next) => {
     return;
   }
 
-  const restaurantCategory = req.body.category;
+  const restaurantCategory = (req.body.category =
+    req.body.category?.toUpperCase());
   const restaurantCategories = [
     constants.restaurantCategory.dineout,
     constants.restaurantCategory.takeout,

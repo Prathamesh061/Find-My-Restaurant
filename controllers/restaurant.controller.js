@@ -109,9 +109,20 @@ exports.getRestaurantsByRating = async (req, res) => {
 
 exports.updateRestaurant = async (req, res) => {
   try {
+    const restaurant = await Restaurant.findById(req.params.id);
+
+    const restaurantObj = {
+      name: req.body.name || restaurant.name,
+      description: req.body.description || restaurant.description,
+      category: req.body.category || restaurant.category,
+      imageURL: req.body.imageURL || restaurant.imageURL,
+      location: req.body.location || restaurant.location,
+      phone: req.body.phone || restaurant.phone,
+      rating: req.body.rating || restaurant.rating,
+    };
     const updatedRestaurant = await Restaurant.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      restaurantObj,
       { new: true }
     );
 

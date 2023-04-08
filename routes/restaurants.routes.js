@@ -17,7 +17,11 @@ module.exports = (app) => {
 
   app.get("/api/restaurant/categories", restaurantContoller.getAllCategories);
 
-  app.get("/api/restaurant/:id", restaurantContoller.getRestaurantById);
+  app.get(
+    "/api/restaurant/:id",
+    [verifyParams.isMongoId],
+    restaurantContoller.getRestaurantById
+  );
 
   app.get(
     "/api/restaurant/rating/:rating",
