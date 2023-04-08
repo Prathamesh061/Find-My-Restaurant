@@ -106,3 +106,59 @@ exports.getRestaurantsByRating = async (req, res) => {
     });
   }
 };
+
+exports.updateRestaurant = async (req, res) => {
+  try {
+    const updatedRestaurant = await Restaurant.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedRestaurant) {
+      return res.status(500).json({
+        message: "Failed to update the restaurant.",
+      });
+    }
+    res.status(200).send({
+      message: "Restaurant updated successfully.",
+    });
+  } catch (err) {
+    console.log("Some error happened while fetching Restaurant", err.message);
+    res.status(500).send({
+      message: "Some error occured while fetching the Restaurant.",
+    });
+  }
+};
+
+exports.deleteRestaurantById = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findByIdAndDelete(req.params.id);
+
+    return res.status(200).send({
+      restaurant,
+      message: "Restaurant deleted successfully.",
+    });
+  } catch (err) {
+    console.log("Some error happened while deleting Restaurant", err.message);
+    res.status(500).send({
+      message: "Some error occured while deleting the Restaurant.",
+    });
+  }
+};
+
+exports.deleteAllRestaurants = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.deleteMany({});
+
+    return res.status(200).send({
+      restaurant,
+      message: "Restaurants deleted successfully.",
+    });
+  } catch (err) {
+    console.log("Some error happened while deleting Restaurant", err.message);
+    res.status(500).send({
+      message: "Some error occured while deleting the Restaurant.",
+    });
+  }
+};

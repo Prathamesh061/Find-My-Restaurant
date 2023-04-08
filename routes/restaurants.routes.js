@@ -1,10 +1,10 @@
-const { verifyRestaurantReqBody, isNumber } = require("../middlewares");
+const { verifyRestaurantBody, verifyParams } = require("../middlewares");
 const restaurantContoller = require("../controllers/restaurant.controller");
 
 module.exports = (app) => {
   app.post(
     "/api/restaurant/add",
-    [verifyRestaurantReqBody.verifyRestaurantReqBody],
+    [verifyRestaurantBody.verifyRestaurantReqBody],
     restaurantContoller.createRestaurant
   );
 
@@ -21,7 +21,21 @@ module.exports = (app) => {
 
   app.get(
     "/api/restaurant/rating/:rating",
-    [isNumber.isNumber],
+    [verifyParams.isNumber],
     restaurantContoller.getRestaurantsByRating
   );
+
+  app.put(
+    "/api/restaurant/:id",
+    [verifyRestaurantBody.verifyRestaurantUpdateBody],
+    restaurantContoller.updateRestaurant
+  );
+
+  app.delete(
+    "/api/restaurant/:id",
+    [verifyParams.isMongoId],
+    restaurantContoller.deleteRestaurantById
+  );
+
+  app.delete("/api/restaurant", restaurantContoller.deleteAllRestaurants);
 };

@@ -1,6 +1,6 @@
-const verifyRestaurantReqBody = require("./verifyRestaurantReqBody");
-const isNumber = require("../middlewares/isNumber");
+const verifyRestaurantBody = require("./verifyRestaurantBody");
+const verifyParams = require("./verifyParams");
 module.exports = {
-  verifyRestaurantReqBody,
-  isNumber
+  verifyRestaurantBody,
+  verifyParams
 };
